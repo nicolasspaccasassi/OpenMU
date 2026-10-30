@@ -273,6 +273,12 @@
   <data name="MonsterCreatedByGameMaster" xml:space="preserve">
     <value>Monster with number {0} created, id: {1}.</value>
   </data>
+  <data name="MonsterNotFound" xml:space="preserve">
+    <value>Monster '{0}' not found.</value>
+  </data>
+  <data name="MonstersSummonedByGameMaster" xml:space="preserve">
+    <value>{0}x {1} summoned.</value>
+  </data>
   <data name="CommandResultPlayerDisconnected" xml:space="preserve">
     <value>[{0}] {1} has been disconnected.</value>
   </data>

@@ -223,6 +223,24 @@ namespace MUnique.OpenMU.GameLogic.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Handles the chat command &apos;/ban &lt;acc&gt;&apos;. Alias of &apos;/banacc&apos; - bans an account from the game..
+        /// </summary>
+        public static string BanChatCommandPlugIn_Description {
+            get {
+                return ResourceManager.GetString("BanChatCommandPlugIn_Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ban command (alias).
+        /// </summary>
+        public static string BanChatCommandPlugIn_Name {
+            get {
+                return ResourceManager.GetString("BanChatCommandPlugIn_Name", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Handles the chat command &apos;/banacc &lt;acc&gt;&apos;. Bans an account from the game..
         /// </summary>
         public static string BanAccChatCommandPlugIn_Description {
@@ -698,7 +716,25 @@ namespace MUnique.OpenMU.GameLogic.Properties {
                 return ResourceManager.GetString("DisconnectChatCommandPlugIn_Name", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Handles the chat command &apos;/kick &lt;char&gt;&apos;. Alias of &apos;/disconnect&apos; - disconnects a player from the game server..
+        /// </summary>
+        public static string KickChatCommandPlugIn_Description {
+            get {
+                return ResourceManager.GetString("KickChatCommandPlugIn_Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kick command (alias).
+        /// </summary>
+        public static string KickChatCommandPlugIn_Name {
+            get {
+                return ResourceManager.GetString("KickChatCommandPlugIn_Name", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Links the account to a Discord user: &apos;/discord link&apos; creates a code which is entered in Discord, &apos;/discord unlink&apos; removes the link, &apos;/discord notify letter&apos; turns direct messages about letters on or off (also &apos;login&apos; and &apos;friend&apos;)..
         /// </summary>
@@ -2012,7 +2048,25 @@ namespace MUnique.OpenMU.GameLogic.Properties {
                 return ResourceManager.GetString("NoticeChatCommandPlugIn_Name", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Handles the chat command &apos;/notice message&apos;. Alias of &apos;/goldnotice&apos; - sends a global golden notice message to all players of the game..
+        /// </summary>
+        public static string NoticeAliasChatCommandPlugIn_Description {
+            get {
+                return ResourceManager.GetString("NoticeAliasChatCommandPlugIn_Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Notice command (alias).
+        /// </summary>
+        public static string NoticeAliasChatCommandPlugIn_Name {
+            get {
+                return ResourceManager.GetString("NoticeAliasChatCommandPlugIn_Name", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Handles the start of nova skill of the wizard class..
         /// </summary>
@@ -3877,7 +3931,25 @@ namespace MUnique.OpenMU.GameLogic.Properties {
                 return ResourceManager.GetString("TwistingSlashMasterySkillPlugIn_Name", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Handles the chat command &apos;/summon &lt;monster&gt; &lt;quantity&gt;&apos;. Summons one or more monsters (by name or number) at the GM&apos;s position..
+        /// </summary>
+        public static string SummonChatCommand_Description {
+            get {
+                return ResourceManager.GetString("SummonChatCommand_Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Summon chat command.
+        /// </summary>
+        public static string SummonChatCommand_Name {
+            get {
+                return ResourceManager.GetString("SummonChatCommand_Name", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Handles the chat command &apos;/unbanacc &lt;acc&gt;&apos;. Unbans an account from the game..
         /// </summary>

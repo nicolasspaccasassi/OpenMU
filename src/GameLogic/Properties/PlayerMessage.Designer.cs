@@ -2001,7 +2001,25 @@ namespace MUnique.OpenMU.GameLogic.Properties {
                 return ResourceManager.GetString("MonsterCreatedByGameMaster", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Monster &apos;{0}&apos; not found..
+        /// </summary>
+        public static string MonsterNotFound {
+            get {
+                return ResourceManager.GetString("MonsterNotFound", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0}x {1} summoned..
+        /// </summary>
+        public static string MonstersSummonedByGameMaster {
+            get {
+                return ResourceManager.GetString("MonstersSummonedByGameMaster", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Monster with id {0} not found..
         /// </summary>

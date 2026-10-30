@@ -537,6 +537,12 @@
   <data name="BanAccChatCommandPlugIn_Description" xml:space="preserve">
     <value>Handles the chat command '/banacc &lt;acc&gt;'. Bans an account from the game.</value>
   </data>
+  <data name="BanChatCommandPlugIn_Name" xml:space="preserve">
+    <value>Ban command (alias)</value>
+  </data>
+  <data name="BanChatCommandPlugIn_Description" xml:space="preserve">
+    <value>Handles the chat command '/ban &lt;acc&gt;'. Alias of '/banacc' - bans an account from the game.</value>
+  </data>
   <data name="BanCharChatCommandPlugIn_Name" xml:space="preserve">
     <value>Ban Character command</value>
   </data>
@@ -578,6 +584,12 @@
   </data>
   <data name="DisconnectChatCommandPlugIn_Description" xml:space="preserve">
     <value>Handles the chat command '/disconnect &lt;char&gt;'. Disconnects a player from the game server.</value>
+  </data>
+  <data name="KickChatCommandPlugIn_Name" xml:space="preserve">
+    <value>Kick command (alias)</value>
+  </data>
+  <data name="KickChatCommandPlugIn_Description" xml:space="preserve">
+    <value>Handles the chat command '/kick &lt;char&gt;'. Alias of '/disconnect' - disconnects a player from the game server.</value>
   </data>
   <data name="GuildBattleSoccerChatCommandPlugIn_Name" xml:space="preserve">
     <value>Guild battle soccer chat command</value>
@@ -650,6 +662,18 @@
   </data>
   <data name="NoticeChatCommandPlugIn_Description" xml:space="preserve">
     <value>Handles the chat command '/goldnotice message'. Sends a global golden notice message to all players of the game.</value>
+  </data>
+  <data name="NoticeAliasChatCommandPlugIn_Name" xml:space="preserve">
+    <value>Notice command (alias)</value>
+  </data>
+  <data name="NoticeAliasChatCommandPlugIn_Description" xml:space="preserve">
+    <value>Handles the chat command '/notice message'. Alias of '/goldnotice' - sends a global golden notice message to all players of the game.</value>
+  </data>
+  <data name="SummonChatCommand_Name" xml:space="preserve">
+    <value>Summon chat command</value>
+  </data>
+  <data name="SummonChatCommand_Description" xml:space="preserve">
+    <value>Handles the chat command '/summon &lt;monster&gt; &lt;quantity&gt;'. Summons one or more monsters (by name or number) at the GM's position.</value>
   </data>
   <data name="SlideNoticeChatCommandPlugIn_Name" xml:space="preserve">
     <value>Slide notice chat command</value>
