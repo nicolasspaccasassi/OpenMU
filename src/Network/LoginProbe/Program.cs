@@ -78,10 +78,14 @@ public static class Program
     {
         Console.Error.WriteLine("usage: MUnique.OpenMU.Network.LoginProbe --account <name> [--host 127.0.0.1]");
         Console.Error.WriteLine("       [--connect-port 44406] [--server 0] [--hold <seconds>]");
+        Console.Error.WriteLine("       [--character <name> [--chat <message>]]");
         Console.Error.WriteLine();
         Console.Error.WriteLine($"The password is read from the environment variable {PasswordVariableName};");
         Console.Error.WriteLine("when it is unset, the account name is used as the password.");
         Console.Error.WriteLine("Logs into the game server like a real client and holds the session.");
+        Console.Error.WriteLine("With --character, also requests the character list, selects that character");
+        Console.Error.WriteLine("(entering the game world with it), and, if --chat is given, sends it as a");
+        Console.Error.WriteLine("public chat message (e.g. a GM chat command) before holding.");
         Console.Error.WriteLine("Writes one JSON object per step to stdout; exit 0 on a successful login.");
     }
 
@@ -193,6 +197,11 @@ public static class Program
             return 1;
         }
 
+        if (!string.IsNullOrEmpty(options.Character))
+        {
+            await EnterWorldAndChatAsync(connection, options).ConfigureAwait(false);
+        }
+
         if (options.HoldSeconds > 0)
         {
             Write(new { ok = true, step = "holding", seconds = options.HoldSeconds });
@@ -202,6 +211,36 @@ public static class Program
         await connection.DisconnectAsync().ConfigureAwait(false);
         Write(new { ok = true, step = "disconnected", account = options.Account });
         return 0;
+    }
+
+    /// <summary>
+    /// Requests the character list (required for the server to accept a character selection),
+    /// selects the given character to enter the game world with it, and optionally sends a chat
+    /// message (e.g. a GM chat command) once in. Mirrors what a real client does on the character
+    /// selection screen and right after entering the world (<c>RequestCharacterList</c> then
+    /// <c>SelectCharacter</c>, see <c>RequestCharacterListAction</c>/<c>SelectCharacterAction</c>
+    /// on the server side for why the order matters: the player state only advances to
+    /// CharacterSelection as a side effect of the character list request).
+    /// </summary>
+    private static async Task EnterWorldAndChatAsync(Connection connection, ProbeOptions options)
+    {
+        await connection.SendRequestCharacterListAsync(0).ConfigureAwait(false);
+        await Task.Delay(500).ConfigureAwait(false);
+
+        await connection.SendSelectCharacterAsync(options.Character).ConfigureAwait(false);
+        Write(new { ok = true, step = "character_selected", character = options.Character });
+
+        // Entering the world (map join, inventory, etc.) happens server-side as a reaction to
+        // SelectCharacter; give it time to settle before anything depends on the player being
+        // fully in the world (e.g. a chat command that looks at the player's current map).
+        await Task.Delay(1500).ConfigureAwait(false);
+
+        if (!string.IsNullOrEmpty(options.Chat))
+        {
+            await connection.SendPublicChatMessageAsync(options.Character, options.Chat).ConfigureAwait(false);
+            Write(new { ok = true, step = "chat_sent", character = options.Character, message = options.Chat });
+            await Task.Delay(500).ConfigureAwait(false);
+        }
     }
 
     private static void HandlePacket(ReadOnlySequence<byte> packet, TaskCompletionSource<LoginResponse.LoginResult> loginResult)
@@ -241,6 +280,10 @@ public static class Program
 
         public string Password { get; private set; } = string.Empty;
 
+        public string Character { get; private set; } = string.Empty;
+
+        public string Chat { get; private set; } = string.Empty;
+
         public static ProbeOptions? Parse(string[] args)
         {
             var options = new ProbeOptions();
@@ -269,6 +312,12 @@ public static class Program
                         break;
                     case "--account":
                         options.Account = value;
+                        break;
+                    case "--character":
+                        options.Character = value;
+                        break;
+                    case "--chat":
+                        options.Chat = value;
                         break;
                     default:
                         return null;
