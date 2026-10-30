@@ -51,7 +51,11 @@ public static class ChatCommandAuditLog
                 CompletedAt = DateTime.UtcNow,
                 PrincipalId = player.Account?.LoginName ?? player.Name,
                 PrincipalName = player.Name,
-                Frontend = "In-game chat command",
+
+                // AdminAuditEntry.Frontend is varchar(16) in the database; "In-game chat command"
+                // (20 chars) silently failed every single write with a Postgres 22001 error,
+                // caught by the catch-all below and logged as a warning no one was watching.
+                Frontend = "In-game chat",
                 Operation = command,
                 ArgumentsJson = JsonSerializer.Serialize(arguments, SerializerOptions),
                 ResultJson = "{}",

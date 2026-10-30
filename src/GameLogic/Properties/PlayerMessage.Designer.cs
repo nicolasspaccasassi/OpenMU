@@ -2012,6 +2012,15 @@ namespace MUnique.OpenMU.GameLogic.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Could not find a spot to summon here - you may be standing in a safezone..
+        /// </summary>
+        public static string MonsterSummonNoValidSpawnPoint {
+            get {
+                return ResourceManager.GetString("MonsterSummonNoValidSpawnPoint", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to {0}x {1} summoned..
         /// </summary>
         public static string MonstersSummonedByGameMaster {

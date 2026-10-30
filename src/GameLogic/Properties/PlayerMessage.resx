@@ -276,6 +276,9 @@
   <data name="MonsterNotFound" xml:space="preserve">
     <value>Monster '{0}' not found.</value>
   </data>
+  <data name="MonsterSummonNoValidSpawnPoint" xml:space="preserve">
+    <value>Could not find a spot to summon here - you may be standing in a safezone.</value>
+  </data>
   <data name="MonstersSummonedByGameMaster" xml:space="preserve">
     <value>{0}x {1} summoned.</value>
   </data>

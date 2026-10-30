@@ -64,17 +64,40 @@ internal class SummonChatCommand : ChatCommandPlugInBase<SummonChatCommandArgs>
             Y2 = (byte)Math.Min(gameMaster.Position.Y + 3, byte.MaxValue),
         };
 
+        var summoned = 0;
         for (var i = 0; i < quantity; i++)
         {
             INpcIntelligence intelligence = new BasicMonsterIntelligence();
             var monster = new Monster(area, monsterDef, gameMap, gameMaster.GameContext.DropGenerator, intelligence, gameMaster.GameContext.PlugInManager, gameMaster.GameContext.PathFinderPool);
             intelligence.Npc = monster;
 
-            monster.Initialize();
+            try
+            {
+                // Monster.Initialize() picks a random walkable point within the area (above) and
+                // throws if none of its (up to 100) attempts land on one - most commonly because
+                // the GM is standing in a safezone, where regular monsters can never spawn. Stop
+                // immediately instead of retrying the same failure up to `quantity` times: every
+                // other monster would fail for the exact same reason.
+                monster.Initialize();
+            }
+            catch (InvalidOperationException)
+            {
+                if (summoned == 0)
+                {
+                    await gameMaster.ShowLocalizedBlueMessageAsync(nameof(PlayerMessage.MonsterSummonNoValidSpawnPoint)).ConfigureAwait(false);
+                }
+
+                break;
+            }
+
             await gameMap.AddAsync(monster).ConfigureAwait(false);
             monster.OnSpawn();
+            summoned++;
         }
 
-        await gameMaster.ShowLocalizedBlueMessageAsync(nameof(PlayerMessage.MonstersSummonedByGameMaster), quantity, identifier).ConfigureAwait(false);
+        if (summoned > 0)
+        {
+            await gameMaster.ShowLocalizedBlueMessageAsync(nameof(PlayerMessage.MonstersSummonedByGameMaster), summoned, identifier).ConfigureAwait(false);
+        }
     }
 }
