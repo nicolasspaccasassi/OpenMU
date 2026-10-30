@@ -11,6 +11,7 @@ using System.IO;
 using System.Text.Json.Serialization;
 using System.Threading;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -472,6 +473,28 @@ internal sealed class Program : IDisposable
 
         if (addAdminPanel)
         {
+            // The MCP endpoint (UseAdminMcpProtection, below) only accepts plaintext HTTP from
+            // loopback clients; a TLS-terminating tunnel (e.g. a Cloudflare quick tunnel put in
+            // front of nginx for testing MCP from a cloud client like ChatGPT) talks HTTPS to the
+            // outside but plain HTTP to nginx, which nginx then passes through to this container
+            // unencrypted - from here that looks identical to a local, insecure request unless we
+            // trust the X-Forwarded-Proto header nginx relays from it. The connecting peer here is
+            // always the nginx container (not loopback, not the real internet client), so the
+            // default forwarded-headers trust (loopback-only) would reject it; this deployment has
+            // no untrusted hop before nginx, so forwarded headers are trusted unconditionally.
+            var forwardedHeaderOptions = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedFor,
+            };
+
+            // Clearing both (rather than adding the nginx container's address) is what actually
+            // means "trust any proxy" to this middleware - an address allowlist would just churn
+            // on Docker's dynamic container IPs for no real security gain, since nginx is already
+            // the only thing this container's admin port is reachable from.
+            forwardedHeaderOptions.KnownNetworks.Clear();
+            forwardedHeaderOptions.KnownProxies.Clear();
+            host.UseForwardedHeaders(forwardedHeaderOptions);
+
             host.UseAdminMcpProtection();
             host.ConfigureAdminPanel();
             host.MapAdminMcp();
