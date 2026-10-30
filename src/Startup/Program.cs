@@ -475,6 +475,12 @@ internal sealed class Program : IDisposable
             host.UseAdminMcpProtection();
             host.ConfigureAdminPanel();
             host.MapAdminMcp();
+
+            // GameLogic (where the GameMaster chat commands live) doesn't use dependency
+            // injection, so it can't resolve the audit repository itself. Setting it here
+            // lets chat commands like /ban or /kick land in the same audit log as actions
+            // performed through the admin panel or its API.
+            GameLogic.PlugIns.ChatCommands.ChatCommandAuditLog.Repository = host.Services.GetService<IAdminAuditRepository>();
         }
 
         // When the server is started with an uninitialized database, the plugin configurations

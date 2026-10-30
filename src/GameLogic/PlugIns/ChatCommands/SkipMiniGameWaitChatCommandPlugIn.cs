@@ -49,6 +49,7 @@ public class SkipMiniGameWaitChatCommandPlugIn : IChatCommandPlugIn
             return;
         }
 
+        await ChatCommandAuditLog.RecordAsync(player, this.Key, this.MinCharacterStatusRequirement, null).ConfigureAwait(false);
         await player.ShowLocalizedBlueMessageAsync(nameof(PlayerMessage.SkipWaitRequested)).ConfigureAwait(false);
         await miniGame.AnnounceSkipAsync(player.Name).ConfigureAwait(false);
     }

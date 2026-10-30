@@ -34,5 +34,7 @@ internal sealed class ShowNpcIdsChatCommand : IChatCommandPlugIn
         {
             await player.InvokeViewPlugInAsync<IShowMessageOfObjectPlugIn>(p => p.ShowMessageOfObjectAsync($"{monster.Id}", monster)).ConfigureAwait(false);
         }
+
+        await ChatCommandAuditLog.RecordAsync(player, this.Key, this.MinCharacterStatusRequirement, null).ConfigureAwait(false);
     }
 }

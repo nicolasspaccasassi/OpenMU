@@ -37,5 +37,6 @@ public class NoticeChatCommandPlugIn : IChatCommandPlugIn
         }
 
         await player.GameContext.SendGlobalMessageAsync(message, Interfaces.MessageType.GoldenCenter).ConfigureAwait(false);
+        await ChatCommandAuditLog.RecordAsync(player, this.Key, this.MinCharacterStatusRequirement, new { message }).ConfigureAwait(false);
     }
 }

@@ -42,6 +42,7 @@ public class CrywolfChatCommandPlugIn : IChatCommandPlugIn
         }
 
         context.SkipWaitingTime();
+        await ChatCommandAuditLog.RecordAsync(player, this.Key, this.MinCharacterStatusRequirement, null).ConfigureAwait(false);
         await player.ShowLocalizedBlueMessageAsync(nameof(PlayerMessage.CrywolfProceeds), context.State).ConfigureAwait(false);
     }
 }

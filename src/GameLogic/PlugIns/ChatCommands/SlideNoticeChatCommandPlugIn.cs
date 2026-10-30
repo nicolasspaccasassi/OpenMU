@@ -37,5 +37,6 @@ public class SlideNoticeChatCommandPlugIn : IChatCommandPlugIn
         }
 
         await player.GameContext.SendGlobalMessageAsync(message, Interfaces.MessageType.SlideNotice).ConfigureAwait(false);
+        await ChatCommandAuditLog.RecordAsync(player, this.Key, this.MinCharacterStatusRequirement, new { message }).ConfigureAwait(false);
     }
 }

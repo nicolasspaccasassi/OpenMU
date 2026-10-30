@@ -64,6 +64,7 @@ public class KillAllMonstersChatCommandPlugIn : IChatCommandPlugIn
             }
         }
 
+        await ChatCommandAuditLog.RecordAsync(player, this.Key, this.MinCharacterStatusRequirement, new { killed }).ConfigureAwait(false);
         await player.ShowLocalizedBlueMessageAsync(nameof(PlayerMessage.KillAllMonstersFormat), killed).ConfigureAwait(false);
     }
 }

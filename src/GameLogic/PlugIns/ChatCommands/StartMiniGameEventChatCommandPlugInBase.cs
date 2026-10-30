@@ -54,6 +54,7 @@ public abstract class StartMiniGameEventChatCommandPlugInBase : IChatCommandPlug
         }
 
         await GameMasterEventActions.StartAsync(player.GameContext, this.MiniGameType, true, CancellationToken.None).ConfigureAwait(false);
+        await ChatCommandAuditLog.RecordAsync(player, this.Key, this.MinCharacterStatusRequirement, new { eventName }).ConfigureAwait(false);
     }
 
     /// <summary>

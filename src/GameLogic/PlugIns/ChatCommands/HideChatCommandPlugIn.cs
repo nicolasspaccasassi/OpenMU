@@ -28,5 +28,6 @@ public class HideChatCommandPlugIn : IChatCommandPlugIn
     public async ValueTask HandleCommandAsync(Player player, string command)
     {
         await player.AddInvisibleEffectAsync().ConfigureAwait(false);
+        await ChatCommandAuditLog.RecordAsync(player, this.Key, this.MinCharacterStatusRequirement, null).ConfigureAwait(false);
     }
 }

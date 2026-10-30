@@ -30,6 +30,7 @@ public abstract class ChatCommandPlugInBase<T> : IChatCommandPlugIn
             if (arguments is not null)
             {
                 await this.DoHandleCommandAsync(player, arguments).ConfigureAwait(false);
+                await ChatCommandAuditLog.RecordAsync(player, this.Key, this.MinCharacterStatusRequirement, arguments).ConfigureAwait(false);
             }
         }
         catch (Exception ex)
