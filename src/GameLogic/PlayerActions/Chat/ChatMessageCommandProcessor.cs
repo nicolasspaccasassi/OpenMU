@@ -27,6 +27,12 @@ public class ChatMessageCommandProcessor : IChatMessageProcessor
             return;
         }
 
+        if (sender.SelectedCharacter.CharacterStatus == CharacterStatus.Normal
+            && commandHandler is IRoleRestrictedChatCommandPlugIn { IsDisabledForNormalPlayers: true })
+        {
+            return;
+        }
+
         await commandHandler.HandleCommandAsync(sender, content.Message).ConfigureAwait(false);
     }
 }

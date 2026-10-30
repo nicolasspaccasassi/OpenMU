@@ -7,12 +7,13 @@ namespace MUnique.OpenMU.GameLogic.PlugIns.ChatCommands;
 using MUnique.OpenMU.AttributeSystem;
 using MUnique.OpenMU.GameLogic.Attributes;
 using MUnique.OpenMU.Pathfinding;
+using MUnique.OpenMU.PlugIns;
 
 /// <summary>
 /// The base of every chat command plug in.
 /// </summary>
 /// <typeparam name="T">The type of arguments base.</typeparam>
-public abstract class ChatCommandPlugInBase<T> : IChatCommandPlugIn
+public abstract class ChatCommandPlugInBase<T> : IChatCommandPlugIn, IRoleRestrictedChatCommandPlugIn, ISupportCustomConfiguration<ChatCommandAccessConfiguration>, ISupportDefaultCustomConfiguration
     where T : ArgumentsBase, new()
 {
     /// <inheritdoc/>
@@ -20,6 +21,15 @@ public abstract class ChatCommandPlugInBase<T> : IChatCommandPlugIn
 
     /// <inheritdoc/>
     public abstract CharacterStatus MinCharacterStatusRequirement { get; }
+
+    /// <inheritdoc/>
+    public ChatCommandAccessConfiguration? Configuration { get; set; }
+
+    /// <inheritdoc/>
+    public bool IsDisabledForNormalPlayers => this.Configuration?.DisabledForNormalPlayers ?? false;
+
+    /// <inheritdoc/>
+    public object CreateDefaultConfig() => new ChatCommandAccessConfiguration();
 
     /// <inheritdoc/>
     public virtual async ValueTask HandleCommandAsync(Player player, string command)
