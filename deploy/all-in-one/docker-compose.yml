@@ -28,6 +28,14 @@ services:
       DB_ADMIN_USER: ${DB_ADMIN_USER:-}
       DB_ADMIN_PW: ${DB_ADMIN_PW:-}
       ASPNETCORE_URLS: http://+:8080
+      # Tells connecting clients which IP to use for the game/connect servers. Without this,
+      # the container defaults to "public" (asks an external service for our public IP), which
+      # is unreachable from the same machine the server runs on (NAT hairpinning) - exactly the
+      # setup for Fase 2 (client + server on the same PC). Loopback resolves to 127.127.127.127;
+      # the whole 127.0.0.0/8 block routes to localhost on Windows, so clients connecting from
+      # this same machine reach the server fine without any extra client-side configuration.
+      # Revisit this once the server moves to its own VPS (Fase 5).
+      RESOLVE_IP: loopback
       # Optional bootstrap admin panel user. Without it, the admin panel is reachable
       # without a login until the first user has been created within the panel itself.
       OPENMU_ADMIN_USER: ${OPENMU_ADMIN_USER:-}
