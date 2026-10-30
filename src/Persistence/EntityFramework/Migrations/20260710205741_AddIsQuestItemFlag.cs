@@ -1,4 +1,4 @@
-﻿// <copyright file="20260710205741_AddIsQuestItemFlag.cs" company="MUnique">
+﻿// <copyright file="20260710205741_AddIsQuestItemFlag.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 

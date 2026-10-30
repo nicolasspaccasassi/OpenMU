@@ -1,4 +1,4 @@
-﻿// <copyright file="CloneableGenerator.cs" company="MUnique">
+﻿// <copyright file="CloneableGenerator.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -97,7 +97,7 @@ public class CloneableGenerator : IIncrementalGenerator
         var isInheritedClonable = declaredClassSymbol.BaseType?.GetAttributes().Any(a => a.AttributeClass?.Name == CloneableAttributeName) ?? false;
 
         sb.AppendLine($"""
-                        // <copyright file="{className}_Cloneable.cs" company="MUnique">
+                        // <copyright file="{className}_Cloneable.cs" company="MuPacca">
                         // Licensed under the MIT License. See LICENSE file in the project root for full license information.
                         // </copyright>
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="20240714154210_FixSetOptions.cs" company="MUnique">
+﻿// <copyright file="20240714154210_FixSetOptions.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 

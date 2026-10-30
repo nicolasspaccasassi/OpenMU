@@ -1,4 +1,4 @@
-// <copyright file="PacketTwister78.cs" company="MUnique">
+// <copyright file="PacketTwister78.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 

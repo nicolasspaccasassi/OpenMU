@@ -1,4 +1,4 @@
-﻿// <copyright file="IViewPlugIn.cs" company="MUnique">
+﻿// <copyright file="IViewPlugIn.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 

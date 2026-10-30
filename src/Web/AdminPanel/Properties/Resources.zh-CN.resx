@@ -256,10 +256,10 @@
     <value>游戏服务器</value>
   </data>
   <data name="WelcomeMessage" xml:space="preserve">
-    <value>欢迎使用 OpenMU 管理后台。</value>
+    <value>欢迎使用 MuPacca 管理后台。</value>
   </data>
   <data name="OpenMUAdminPanel" xml:space="preserve">
-    <value>OpenMU 管理后台</value>
+    <value>MuPacca 管理后台</value>
   </data>
   <data name="About" xml:space="preserve">
     <value>关于</value>

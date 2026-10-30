@@ -1,4 +1,4 @@
-// <copyright file="LiveGameOperations.cs" company="MUnique">
+// <copyright file="LiveGameOperations.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="20250114201231_AddAccountIsTemplate.cs" company="MUnique">
+﻿// <copyright file="20250114201231_AddAccountIsTemplate.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 

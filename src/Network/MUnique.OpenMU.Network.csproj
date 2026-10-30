@@ -7,7 +7,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Authors>MUnique</Authors>
+    <Authors>MuPacca</Authors>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/MUnique/OpenMU/tree/master/src/Network</RepositoryUrl>
     <PackageProjectUrl>https://munique.net</PackageProjectUrl>

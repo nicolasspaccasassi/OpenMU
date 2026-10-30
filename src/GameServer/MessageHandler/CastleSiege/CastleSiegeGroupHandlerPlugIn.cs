@@ -1,4 +1,4 @@
-// <copyright file="CastleSiegeGroupHandlerPlugIn.cs" company="MUnique">
+// <copyright file="CastleSiegeGroupHandlerPlugIn.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 

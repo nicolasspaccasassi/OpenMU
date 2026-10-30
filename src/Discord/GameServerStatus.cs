@@ -1,4 +1,4 @@
-﻿// <copyright file="GameServerStatus.cs" company="MUnique">
+﻿// <copyright file="GameServerStatus.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 

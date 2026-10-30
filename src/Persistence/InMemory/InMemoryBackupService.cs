@@ -1,4 +1,4 @@
-// <copyright file="InMemoryBackupService.cs" company="MUnique">
+// <copyright file="InMemoryBackupService.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 

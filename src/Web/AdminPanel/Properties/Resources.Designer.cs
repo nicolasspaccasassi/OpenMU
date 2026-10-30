@@ -6685,7 +6685,7 @@ namespace MUnique.OpenMU.Web.AdminPanel.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to OpenMU AdminPanel.
+        ///   Looks up a localized string similar to MuPacca AdminPanel.
         /// </summary>
         public static string OpenMUAdminPanel {
             get {
@@ -8116,7 +8116,7 @@ namespace MUnique.OpenMU.Web.AdminPanel.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Welcome to the admin panel of OpenMU..
+        ///   Looks up a localized string similar to Welcome to the admin panel of MuPacca..
         /// </summary>
         public static string WelcomeMessage {
             get {

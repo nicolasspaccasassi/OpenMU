@@ -1,4 +1,4 @@
-﻿// <copyright file="FixLevelDiv20ExcOptionUpdatePlugIn.cs" company="MUnique">
+﻿// <copyright file="FixLevelDiv20ExcOptionUpdatePlugIn.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 

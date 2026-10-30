@@ -259,10 +259,10 @@
     <value>Game Server</value>
   </data>
   <data name="WelcomeMessage" xml:space="preserve">
-    <value>Welcome to the admin panel of OpenMU.</value>
+    <value>Welcome to the admin panel of MuPacca.</value>
   </data>
   <data name="OpenMUAdminPanel" xml:space="preserve">
-    <value>OpenMU AdminPanel</value>
+    <value>MuPacca AdminPanel</value>
   </data>
   <data name="About" xml:space="preserve">
     <value>About</value>

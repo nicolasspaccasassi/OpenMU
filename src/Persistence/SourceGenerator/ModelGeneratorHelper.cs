@@ -1,4 +1,4 @@
-// <copyright file="ModelGeneratorHelper.cs" company="MUnique">
+// <copyright file="ModelGeneratorHelper.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -17,7 +17,7 @@ internal static class ModelGeneratorHelper
     /// <summary>
     /// Gets a header template for a generated file.
     /// </summary>
-    public static string FileHeaderTemplate => @"// <copyright file=""{0}.Generated.cs"" company=""MUnique"">
+    public static string FileHeaderTemplate => @"// <copyright file=""{0}.Generated.cs"" company=""MuPacca"">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 

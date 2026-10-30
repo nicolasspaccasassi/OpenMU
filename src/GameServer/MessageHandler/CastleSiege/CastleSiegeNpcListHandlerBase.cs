@@ -1,4 +1,4 @@
-// <copyright file="CastleSiegeNpcListHandlerBase.cs" company="MUnique">
+// <copyright file="CastleSiegeNpcListHandlerBase.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 

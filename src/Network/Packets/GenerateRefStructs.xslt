@@ -9,7 +9,7 @@
   <xsl:include href="Common.xslt" />
 
   <xsl:template match="pd:PacketDefinitions">
-    <xsl:text>// &lt;copyright file="</xsl:text><xsl:value-of select="$resultFileName"/><xsl:text>" company="MUnique"&gt;
+    <xsl:text>// &lt;copyright file="</xsl:text><xsl:value-of select="$resultFileName"/><xsl:text>" company="MuPacca"&gt;
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // &lt;/copyright&gt;
 

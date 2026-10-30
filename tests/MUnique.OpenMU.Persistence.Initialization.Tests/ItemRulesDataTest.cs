@@ -1,4 +1,4 @@
-// <copyright file="ItemRulesDataTest.cs" company="MUnique">
+// <copyright file="ItemRulesDataTest.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 

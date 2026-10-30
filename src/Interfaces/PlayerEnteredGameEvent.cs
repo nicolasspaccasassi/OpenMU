@@ -1,4 +1,4 @@
-﻿// <copyright file="PlayerEnteredGameEvent.cs" company="MUnique">
+﻿// <copyright file="PlayerEnteredGameEvent.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 

@@ -1,4 +1,4 @@
-// <copyright file="ChatCommandGroupHandlerPlugIn.cs" company="MUnique">
+// <copyright file="ChatCommandGroupHandlerPlugIn.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="BuyRequestAction.cs" company="MUnique">
+﻿// <copyright file="BuyRequestAction.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 

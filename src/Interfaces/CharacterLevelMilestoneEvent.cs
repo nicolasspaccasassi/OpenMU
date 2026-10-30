@@ -1,4 +1,4 @@
-﻿// <copyright file="CharacterLevelMilestoneEvent.cs" company="MUnique">
+﻿// <copyright file="CharacterLevelMilestoneEvent.cs" company="MuPacca">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
