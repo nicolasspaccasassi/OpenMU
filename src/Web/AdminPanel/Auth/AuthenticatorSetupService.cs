@@ -19,7 +19,7 @@ using QRCoder;
 /// </remarks>
 public class AuthenticatorSetupService
 {
-    private const string Issuer = "MuPacca AdminPanel";
+    private const string Issuer = "Arkanum AdminPanel";
     private const int RecoveryCodeCount = 10;
 
     private readonly UserManager<AdminUser> _userManager;

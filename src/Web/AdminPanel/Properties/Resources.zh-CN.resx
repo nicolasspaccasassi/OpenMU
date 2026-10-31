@@ -256,10 +256,10 @@
     <value>游戏服务器</value>
   </data>
   <data name="WelcomeMessage" xml:space="preserve">
-    <value>欢迎使用 MuPacca 管理后台。</value>
+    <value>欢迎使用 Arkanum 管理后台。</value>
   </data>
   <data name="OpenMUAdminPanel" xml:space="preserve">
-    <value>MuPacca 管理后台</value>
+    <value>Arkanum 管理后台</value>
   </data>
   <data name="About" xml:space="preserve">
     <value>关于</value>
