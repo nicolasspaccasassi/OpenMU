@@ -12,7 +12,7 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.CompiledModels.ForEntityDat
     public partial class EntityDataContextModel
     {
         private EntityDataContextModel()
-            : base(skipDetectChanges: false, modelId: new Guid("5577b320-884d-448b-a346-3a37f266931a"), entityTypeCount: 128)
+            : base(skipDetectChanges: false, modelId: new Guid("25c6d43c-8b12-4737-89a7-47211ac426d4"), entityTypeCount: 129)
         {
         }
 
@@ -26,6 +26,7 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.CompiledModels.ForEntityDat
             var attributeDefinition = AttributeDefinitionEntityType.Create(this);
             var attributeRelationship = AttributeRelationshipEntityType.Create(this);
             var attributeRequirement = AttributeRequirementEntityType.Create(this);
+            var bannedHardwareId = BannedHardwareIdEntityType.Create(this);
             var battleZoneDefinition = BattleZoneDefinitionEntityType.Create(this);
             var buff = BuffEntityType.Create(this);
             var cashShopCoinGrant = CashShopCoinGrantEntityType.Create(this);
@@ -407,6 +408,7 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.CompiledModels.ForEntityDat
             AttributeDefinitionEntityType.CreateAnnotations(attributeDefinition);
             AttributeRelationshipEntityType.CreateAnnotations(attributeRelationship);
             AttributeRequirementEntityType.CreateAnnotations(attributeRequirement);
+            BannedHardwareIdEntityType.CreateAnnotations(bannedHardwareId);
             BattleZoneDefinitionEntityType.CreateAnnotations(battleZoneDefinition);
             BuffEntityType.CreateAnnotations(buff);
             CashShopCoinGrantEntityType.CreateAnnotations(cashShopCoinGrant);

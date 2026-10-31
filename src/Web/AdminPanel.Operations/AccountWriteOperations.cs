@@ -105,6 +105,14 @@ public sealed class AccountWriteOperations(IPersistenceContextProvider persisten
 
                 account.State = state;
                 await SaveAsync(context, cancellationToken).ConfigureAwait(false);
+
+                if (state is AccountState.Banned or AccountState.TemporarilyBanned
+                    && account.LastKnownHardwareId is { Length: > 0 } hardwareIdHash)
+                {
+                    // So the banned player can't just register a new, free account on the same machine.
+                    await context.BanHardwareIdAsync(hardwareIdHash, account.LoginName, cancellationToken).ConfigureAwait(false);
+                }
+
                 return AdminReadResult.From(new { loginName = account.LoginName, state = state.ToString() });
             },
             cancellationToken);

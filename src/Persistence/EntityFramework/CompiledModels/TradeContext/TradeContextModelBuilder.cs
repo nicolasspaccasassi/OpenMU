@@ -12,7 +12,7 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.CompiledModels.ForTradeCont
     public partial class TradeContextModel
     {
         private TradeContextModel()
-            : base(skipDetectChanges: false, modelId: new Guid("0270667c-2566-4156-944b-07ee53f56a8b"), entityTypeCount: 47)
+            : base(skipDetectChanges: false, modelId: new Guid("1cfaf256-0fc2-4edc-b6d9-baadb381b4dd"), entityTypeCount: 48)
         {
         }
 
@@ -23,6 +23,7 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.CompiledModels.ForTradeCont
             var accountExternalLink = AccountExternalLinkEntityType.Create(this);
             var appearanceData = AppearanceDataEntityType.Create(this);
             var attributeRelationship = AttributeRelationshipEntityType.Create(this);
+            var bannedHardwareId = BannedHardwareIdEntityType.Create(this);
             var cashShopCoinGrant = CashShopCoinGrantEntityType.Create(this);
             var cashShopStorageItem = CashShopStorageItemEntityType.Create(this);
             var castleSiegeData = CastleSiegeDataEntityType.Create(this);
@@ -99,6 +100,7 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.CompiledModels.ForTradeCont
             AccountExternalLinkEntityType.CreateAnnotations(accountExternalLink);
             AppearanceDataEntityType.CreateAnnotations(appearanceData);
             AttributeRelationshipEntityType.CreateAnnotations(attributeRelationship);
+            BannedHardwareIdEntityType.CreateAnnotations(bannedHardwareId);
             CashShopCoinGrantEntityType.CreateAnnotations(cashShopCoinGrant);
             CashShopStorageItemEntityType.CreateAnnotations(cashShopStorageItem);
             CastleSiegeDataEntityType.CreateAnnotations(castleSiegeData);

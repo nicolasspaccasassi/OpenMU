@@ -7918,5 +7918,11 @@ namespace MUnique.OpenMU.GameServer.Properties {
 
         /// <summary>Gets the localized PingHandlerPlugIn_Description text.</summary>
         public static string PingHandlerPlugIn_Description => ResourceManager.GetString("PingHandlerPlugIn_Description", resourceCulture)!;
+
+        /// <summary>Gets the localized HardwareReportHandlerPlugIn_Name text.</summary>
+        public static string HardwareReportHandlerPlugIn_Name => ResourceManager.GetString("HardwareReportHandlerPlugIn_Name", resourceCulture)!;
+
+        /// <summary>Gets the localized HardwareReportHandlerPlugIn_Description text.</summary>
+        public static string HardwareReportHandlerPlugIn_Description => ResourceManager.GetString("HardwareReportHandlerPlugIn_Description", resourceCulture)!;
     }
 }

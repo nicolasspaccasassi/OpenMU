@@ -69,6 +69,30 @@ public interface IPlayerContext : IContext
     ValueTask<Account?> GetAccountByLoginNameAsync(string loginName, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Determines whether the given hardware fingerprint hash is on the hardware ban list.
+    /// </summary>
+    /// <param name="hardwareIdHash">The hash of the hardware fingerprint, as reported by the client.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns><c>true</c> if the hardware id is banned; otherwise, <c>false</c>.</returns>
+    ValueTask<bool> IsHardwareIdBannedAsync(string hardwareIdHash, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Adds a hardware fingerprint hash to the hardware ban list, if it isn't already on it.
+    /// </summary>
+    /// <param name="hardwareIdHash">The hash of the hardware fingerprint to ban.</param>
+    /// <param name="reason">An optional reason, e.g. the login name of the account whose ban triggered this.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    ValueTask BanHardwareIdAsync(string hardwareIdHash, string? reason, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Records the hardware fingerprint hash which last logged into the given account.
+    /// </summary>
+    /// <param name="accountId">The identifier of the account.</param>
+    /// <param name="hardwareIdHash">The hash of the hardware fingerprint, as reported by the client.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    ValueTask SetLastKnownHardwareIdAsync(Guid accountId, string hardwareIdHash, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Gets the accounts ordered by login name.
     /// </summary>
     /// <param name="skip">The skip count.</param>

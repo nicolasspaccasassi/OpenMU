@@ -262,6 +262,13 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
     public Views.Login.LoginResult? LoginResultOverride { get; set; }
 
     /// <summary>
+    /// Gets or sets the hash of the hardware fingerprint which the client reported for this connection,
+    /// before the login request arrives (see the hardware-report packet handler). <see langword="null"/>
+    /// if the client didn't report one, e.g. an older or non-standard client.
+    /// </summary>
+    public string? PendingHardwareIdHash { get; set; }
+
+    /// <summary>
     /// Gets the point in time (UTC) when the client of this player reported the last time that it's alive,
     /// e.g. by its periodic ping, while the player is in the world. It's <c>null</c>, if the client didn't report
     /// it since the player entered the world, e.g. because it doesn't support it, or because this player has no

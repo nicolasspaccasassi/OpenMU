@@ -178,6 +178,15 @@ public class Account
     public bool IsNetworkObservationActive { get; set; }
 
     /// <summary>
+    /// Gets or sets the hash of the hardware fingerprint which last logged into this account,
+    /// if the client reported one. Recorded on login; used to extend an account ban to the
+    /// device, via <see cref="BannedHardwareId"/>, so a banned player can't just register
+    /// a new account on the same machine.
+    /// </summary>
+    [Browsable(false)]
+    public string? LastKnownHardwareId { get; set; }
+
+    /// <summary>
     /// Gets or sets the characters.
     /// </summary>
     [MemberOfAggregate]

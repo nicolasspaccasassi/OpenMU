@@ -2621,6 +2621,12 @@
   <data name="PingHandlerPlugIn_Description" xml:space="preserve">
     <value>Handles the ping which the client sends periodically, which reports that it's alive.</value>
   </data>
+  <data name="HardwareReportHandlerPlugIn_Name" xml:space="preserve">
+    <value>Hardware Report Handler</value>
+  </data>
+  <data name="HardwareReportHandlerPlugIn_Description" xml:space="preserve">
+    <value>Handles the hardware fingerprint hash a MuPacca client reports before logging in, used for the hardware ban list.</value>
+  </data>
   <data name="CashShopGroupHandlerPlugIn_Name" xml:space="preserve">
     <value>Cash shop group handler</value>
   </data>

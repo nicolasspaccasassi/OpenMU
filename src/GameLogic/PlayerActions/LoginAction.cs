@@ -7,6 +7,7 @@ namespace MUnique.OpenMU.GameLogic.PlayerActions;
 using System.Threading;
 using MUnique.OpenMU.GameLogic.Views.Login;
 using MUnique.OpenMU.Interfaces;
+using MUnique.OpenMU.Persistence;
 
 /// <summary>
 /// Action to log in a player to the game.
@@ -36,11 +37,21 @@ public class LoginAction
             return;
         }
 
+        if (!await this.ValidateHardwareIdAsync(player, username).ConfigureAwait(false))
+        {
+            return;
+        }
+
         var (success, account) = await this.TryEstablishSessionAsync(player, username).ConfigureAwait(false);
         if (success && account is { })
         {
             try
             {
+                if (player.PendingHardwareIdHash is { Length: > 0 } hardwareIdHash)
+                {
+                    await player.PersistenceContext.SetLastKnownHardwareIdAsync(account.GetId(), hardwareIdHash).ConfigureAwait(false);
+                }
+
                 await this.FinishLoginAsync(player, username, account).ConfigureAwait(false);
             }
             catch (Exception ex)
@@ -107,6 +118,29 @@ public class LoginAction
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Rejects the login if the connecting client reported a hardware fingerprint which is on the
+    /// hardware ban list - e.g. a banned player's device, trying to get back in with a new account.
+    /// A client which doesn't report a fingerprint (<see cref="Player.PendingHardwareIdHash"/> is
+    /// <see langword="null"/>) is let through unaffected; the check only ever adds a restriction.
+    /// </summary>
+    private async ValueTask<bool> ValidateHardwareIdAsync(Player player, string username)
+    {
+        if (player.PendingHardwareIdHash is not { Length: > 0 } hardwareIdHash)
+        {
+            return true;
+        }
+
+        if (!await player.PersistenceContext.IsHardwareIdBannedAsync(hardwareIdHash).ConfigureAwait(false))
+        {
+            return true;
+        }
+
+        player.Logger.LogWarning("Rejected login for [{Username}]: its hardware id is banned.", username);
+        await player.InvokeViewPlugInAsync<IShowLoginResultPlugIn>(p => p.ShowLoginResultAsync(LoginResult.AccountBlocked)).ConfigureAwait(false);
+        return false;
     }
 
     private async ValueTask<(bool Success, Account? Account)> TryEstablishSessionAsync(Player player, string username)

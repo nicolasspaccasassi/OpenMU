@@ -10,6 +10,7 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -78,7 +79,7 @@ public static class Program
     {
         Console.Error.WriteLine("usage: MUnique.OpenMU.Network.LoginProbe --account <name> [--host 127.0.0.1]");
         Console.Error.WriteLine("       [--connect-port 44406] [--server 0] [--hold <seconds>]");
-        Console.Error.WriteLine("       [--character <name> [--chat <message>]]");
+        Console.Error.WriteLine("       [--character <name> [--chat <message>]] [--hardware-id <id>]");
         Console.Error.WriteLine();
         Console.Error.WriteLine($"The password is read from the environment variable {PasswordVariableName};");
         Console.Error.WriteLine("when it is unset, the account name is used as the password.");
@@ -180,6 +181,11 @@ public static class Program
         // The client waits for the server's greeting before it sends its credentials.
         await Task.Delay(500).ConfigureAwait(false);
 
+        if (!string.IsNullOrEmpty(options.HardwareId))
+        {
+            await SendHardwareReportAsync(connection, options.HardwareId).ConfigureAwait(false);
+        }
+
         await connection.SendLoginLongPasswordAsync(
             Encrypt(options.Account),
             Encrypt(options.Password),
@@ -211,6 +217,33 @@ public static class Program
         await connection.DisconnectAsync().ConfigureAwait(false);
         Write(new { ok = true, step = "disconnected", account = options.Account });
         return 0;
+    }
+
+    /// <summary>
+    /// Sends the custom hardware-report packet (see <c>HardwareReportHandlerPlugIn</c> on the server),
+    /// which isn't part of the generated packet library: [0xC1][length=20][0xF4][16-byte hash][1 flags byte].
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="hardwareIdHex">The hardware id, as a hex string. Hashed with SHA-256 and truncated
+    /// to 16 bytes, the same transform a real client would apply to its raw fingerprint.</param>
+    private static async ValueTask SendHardwareReportAsync(Connection connection, string hardwareIdHex)
+    {
+        var hash = SHA256.HashData(Encoding.UTF8.GetBytes(hardwareIdHex))[..16];
+        const int length = 3 + 16 + 1;
+
+        int WritePacket()
+        {
+            var span = connection.Output.GetSpan(length)[..length];
+            span[0] = 0xC1;
+            span[1] = length;
+            span[2] = 0xF4;
+            hash.CopyTo(span.Slice(3, 16));
+            span[19] = 0;
+            return length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+        Write(new { ok = true, step = "hardware_report_sent", hash = Convert.ToHexString(hash) });
     }
 
     /// <summary>
@@ -284,6 +317,8 @@ public static class Program
 
         public string Chat { get; private set; } = string.Empty;
 
+        public string HardwareId { get; private set; } = string.Empty;
+
         public static ProbeOptions? Parse(string[] args)
         {
             var options = new ProbeOptions();
@@ -318,6 +353,9 @@ public static class Program
                         break;
                     case "--chat":
                         options.Chat = value;
+                        break;
+                    case "--hardware-id":
+                        options.HardwareId = value;
                         break;
                     default:
                         return null;

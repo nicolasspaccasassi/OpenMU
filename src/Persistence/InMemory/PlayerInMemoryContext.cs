@@ -57,6 +57,40 @@ public class PlayerInMemoryContext : InMemoryContext, IPlayerContext
     }
 
     /// <inheritdoc/>
+    public async ValueTask<bool> IsHardwareIdBannedAsync(string hardwareIdHash, CancellationToken cancellationToken = default)
+    {
+        var bannedIds = await this.Provider.GetRepository<BannedHardwareId>().GetAllAsync(cancellationToken).ConfigureAwait(false);
+        return bannedIds.Any(b => b.HardwareIdHash == hardwareIdHash);
+    }
+
+    /// <inheritdoc/>
+    public async ValueTask BanHardwareIdAsync(string hardwareIdHash, string? reason, CancellationToken cancellationToken = default)
+    {
+        if (await this.IsHardwareIdBannedAsync(hardwareIdHash, cancellationToken).ConfigureAwait(false))
+        {
+            return;
+        }
+
+        var entry = this.CreateNew<BannedHardwareId>();
+        entry.Id = Guid.NewGuid();
+        entry.HardwareIdHash = hardwareIdHash;
+        entry.BannedAt = DateTime.UtcNow;
+        entry.Reason = reason;
+        await this.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public async ValueTask SetLastKnownHardwareIdAsync(Guid accountId, string hardwareIdHash, CancellationToken cancellationToken = default)
+    {
+        var accounts = await this.Provider.GetRepository<Account>().GetAllAsync(cancellationToken).ConfigureAwait(false);
+        if (accounts.FirstOrDefault(account => account.Id == accountId) is { } account)
+        {
+            account.LastKnownHardwareId = hardwareIdHash;
+            await this.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+    }
+
+    /// <inheritdoc/>
     public async ValueTask<IEnumerable<MUnique.OpenMU.DataModel.Entities.Account>> GetAccountsOrderedByLoginNameAsync(int skip, int count, CancellationToken cancellationToken = default)
     {
         var allAccounts = await this.Provider.GetRepository<Account>().GetAllAsync(cancellationToken).ConfigureAwait(false);

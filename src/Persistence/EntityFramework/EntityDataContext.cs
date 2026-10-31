@@ -130,6 +130,7 @@ public class EntityDataContext : ExtendedTypeContext
         modelBuilder.Entity<PowerUpDefinitionValue>().Apply();
         modelBuilder.Entity<Model.ConstValueAttribute>();
         modelBuilder.Entity<Account>().Apply();
+        modelBuilder.Entity<BannedHardwareId>(entity => entity.HasIndex(b => b.HardwareIdHash));
         modelBuilder.Entity<Character>().Apply();
         modelBuilder.Entity<CharacterClass>().Apply();
         modelBuilder.Entity<CastleSiegeConfiguration>().Apply();

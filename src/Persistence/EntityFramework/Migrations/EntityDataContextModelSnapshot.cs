@@ -57,6 +57,9 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                         .HasColumnType("character varying(3)")
                         .HasDefaultValue("en");
 
+                    b.Property<string>("LastKnownHardwareId")
+                        .HasColumnType("text");
+
                     b.Property<string>("LoginName")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -366,6 +369,29 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                     b.HasIndex("SkillId1");
 
                     b.ToTable("AttributeRequirement", "config");
+                });
+
+            modelBuilder.Entity("MUnique.OpenMU.Persistence.EntityFramework.Model.BannedHardwareId", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("BannedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("HardwareIdHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HardwareIdHash");
+
+                    b.ToTable("BannedHardwareId", "data");
                 });
 
             modelBuilder.Entity("MUnique.OpenMU.Persistence.EntityFramework.Model.BattleZoneDefinition", b =>

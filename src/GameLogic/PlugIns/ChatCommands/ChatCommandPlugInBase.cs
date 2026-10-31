@@ -269,6 +269,14 @@ public abstract class ChatCommandPlugInBase<T> : IChatCommandPlugIn, IRoleRestri
 
         account.State = accountState;
         await context.SaveChangesAsync().ConfigureAwait(false);
+
+        if (accountState is AccountState.Banned or AccountState.TemporarilyBanned
+            && account.LastKnownHardwareId is { Length: > 0 } hardwareIdHash)
+        {
+            // So the banned player can't just register a new, free account on the same machine.
+            await context.BanHardwareIdAsync(hardwareIdHash, account.LoginName).ConfigureAwait(false);
+        }
+
         return true;
     }
 }

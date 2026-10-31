@@ -56,6 +56,7 @@ internal sealed class BasicModelConverter
             AttributeDefinition value => this.Convert(value),
             AttributeRelationship value => this.Convert(value),
             AttributeRequirement value => this.Convert(value),
+            BannedHardwareId value => this.Convert(value),
             BattleZoneDefinition value => this.Convert(value),
             Buff value => this.Convert(value),
             CashShopCoinGrant value => this.Convert(value),
@@ -195,6 +196,7 @@ internal sealed class BasicModelConverter
         target.IsTemplate = source.IsTemplate;
         target.IsBot = source.IsBot;
         target.IsNetworkObservationActive = source.IsNetworkObservationActive;
+        target.LastKnownHardwareId = source.LastKnownHardwareId;
         if (source.Characters is { } charactersItems)
         {
             foreach (var item in charactersItems)
@@ -338,6 +340,22 @@ internal sealed class BasicModelConverter
         target.Attribute = (MUnique.OpenMU.AttributeSystem.AttributeDefinition)this.ConvertObject(source.Attribute)!;
         target.MinimumValue = source.MinimumValue;
         target.MinimumItemLevel = source.MinimumItemLevel;
+        return target;
+    }
+
+    private BasicModel.BannedHardwareId Convert(BannedHardwareId source)
+    {
+        if (this._converted.TryGetValue(source, out var converted))
+        {
+            return (BasicModel.BannedHardwareId)converted;
+        }
+
+        var target = new BasicModel.BannedHardwareId();
+        this._converted.Add(source, target);
+        target.Id = source.Id;
+        target.HardwareIdHash = source.HardwareIdHash;
+        target.BannedAt = source.BannedAt;
+        target.Reason = source.Reason;
         return target;
     }
 
