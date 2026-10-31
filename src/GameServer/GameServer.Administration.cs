@@ -47,6 +47,10 @@ public sealed partial class GameServer : IGameServerAdministration
         => this.Administration.StartEventAsync(eventType, restart, expectedEvent, cancellationToken);
 
     /// <inheritdoc />
+    public ValueTask<GameServerAdminResult> SpawnMonsterAsync(ushort mapNumber, string monsterIdentifier, byte x, byte y, int quantity, CancellationToken cancellationToken)
+        => this.Administration.SpawnMonsterAsync(mapNumber, monsterIdentifier, x, y, quantity, cancellationToken);
+
+    /// <inheritdoc />
     public ValueTask<IReadOnlyList<AdminPluginOperationInfo>> GetAdminOperationsAsync(CancellationToken cancellationToken)
         => this.Administration.GetAdminOperationsAsync(cancellationToken);
 

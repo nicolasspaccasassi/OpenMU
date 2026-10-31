@@ -112,4 +112,33 @@ public sealed class LiveGameWriteTools
         [Description("Apply only after approving the event preview.")] bool apply = false,
         [Description("Single-use token from the identical preview.")] string? confirmationToken = null)
         => AdminToolExecution.ExecuteAsync(() => operations.StartEventAsync(serverId, eventType, restart, apply, confirmationToken, cancellationToken));
+
+    /// <summary>Preview or spawn one or more monsters live on a hosted map, independent of any online character.</summary>
+    /// <param name="operations">The shared live operations.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <param name="serverId">Actual game server identifier.</param>
+    /// <param name="mapNumber">Hosted target map number.</param>
+    /// <param name="monsterIdentifier">The monster's configured number, or its exact neutral-language name.</param>
+    /// <param name="x">Horizontal center of the spawn area.</param>
+    /// <param name="y">Vertical center of the spawn area.</param>
+    /// <param name="quantity">Number of monsters to spawn, clamped to a safe maximum.</param>
+    /// <param name="apply">Apply only after approving the preview.</param>
+    /// <param name="confirmationToken">Single-use token from the identical preview.</param>
+    /// <returns>The safe live result or preview.</returns>
+    [McpServerTool(Name = "monsters_spawn", ReadOnly = false, Destructive = true, Idempotent = false, OpenWorld = false, UseStructuredContent = true)]
+    [Description("Preview or spawn one or more monsters live on a hosted map, independent of any online character. Fails only if none could be placed (e.g. the whole area is a safe zone).")]
+    [Authorize(Roles = "Operator")]
+    [ExposesOperation(typeof(LiveGameOperations), nameof(LiveGameOperations.SpawnMonsterAsync))]
+    public static ValueTask<JsonObject> MonstersSpawnAsync(
+        [FromServices] LiveGameOperations operations,
+        CancellationToken cancellationToken,
+        [Description("Actual game server identifier.")] int serverId,
+        [Description("Hosted target map number.")] ushort mapNumber,
+        [Description("The monster's configured number, or its exact neutral-language name.")] string monsterIdentifier,
+        [Description("Horizontal center of the spawn area.")] byte x,
+        [Description("Vertical center of the spawn area.")] byte y,
+        [Description("Number of monsters to spawn, clamped to a safe maximum.")] int quantity = 1,
+        [Description("Apply only after approving the preview.")] bool apply = false,
+        [Description("Single-use token from the identical preview.")] string? confirmationToken = null)
+        => AdminToolExecution.ExecuteAsync(() => operations.SpawnMonsterAsync(serverId, mapNumber, monsterIdentifier, x, y, quantity, apply, confirmationToken, cancellationToken));
 }

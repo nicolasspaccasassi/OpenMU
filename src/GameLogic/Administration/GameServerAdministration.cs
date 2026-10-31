@@ -90,6 +90,27 @@ public sealed partial class GameServerAdministration(IGameContext context) : IGa
             ? GameMasterEventActions.StartAsync(context, type, restart, cancellationToken, expectedEvent)
             : ValueTask.FromResult(new GameServerAdminResult(false, "Unknown event type. Use events_schedule to find its invariant name."));
 
+    /// <inheritdoc />
+    public async ValueTask<GameServerAdminResult> SpawnMonsterAsync(ushort mapNumber, string monsterIdentifier, byte x, byte y, int quantity, CancellationToken cancellationToken)
+    {
+        var map = await context.GetMapAsync(mapNumber, true).ConfigureAwait(false);
+        if (map is null)
+        {
+            return new(false, "The map is not configured on this game server.");
+        }
+
+        var monsterDefinition = short.TryParse(monsterIdentifier, out var number)
+            ? context.Configuration.Monsters.FirstOrDefault(m => m.Number == number)
+            : context.Configuration.Monsters.FirstOrDefault(m => m.Designation.ValueInNeutralLanguageAsSpan.Equals(monsterIdentifier, StringComparison.OrdinalIgnoreCase));
+        if (monsterDefinition is null)
+        {
+            return new(false, "Unknown monster. Use its configured number or its exact neutral-language name.");
+        }
+
+        var (spawned, stoppedReason) = await GameMasterActions.SpawnMonstersAsync(map, context, monsterDefinition, x, y, quantity).ConfigureAwait(false);
+        return new(spawned > 0, spawned > 0 ? null : stoppedReason ?? "No monsters could be spawned.");
+    }
+
     private static bool IsAvailable(Player player) => player is not OfflinePlayer && player.IsConnected
         && player.PlayerState.CurrentState == PlayerState.EnteredWorld && player.SelectedCharacter is not null && player.Account is not null;
 

@@ -69,4 +69,15 @@ public interface IGameServerAdministration : IGameServerPluginOperations
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The confirmed start request result; the periodic task starts the event on its next tick.</returns>
     ValueTask<GameServerAdminResult> StartEventAsync(string eventType, bool restart, LiveEventInfo expectedEvent, CancellationToken cancellationToken);
+
+    /// <summary>Spawns one or more monsters live on a hosted map, independent of any online character.</summary>
+    /// <param name="mapNumber">The target map, which must be hosted by this game server.</param>
+    /// <param name="monsterIdentifier">The monster's configured number, or its neutral-language name.</param>
+    /// <param name="x">The horizontal coordinate of the spawn area's center.</param>
+    /// <param name="y">The vertical coordinate of the spawn area's center.</param>
+    /// <param name="quantity">The number of monsters to spawn, clamped to a safe maximum.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>Succeeded once at least one monster spawned, even if fewer than requested (e.g. the area
+    /// ran out of valid spawn points); failed only if none did, with why in <see cref="GameServerAdminResult.Error"/>.</returns>
+    ValueTask<GameServerAdminResult> SpawnMonsterAsync(ushort mapNumber, string monsterIdentifier, byte x, byte y, int quantity, CancellationToken cancellationToken);
 }

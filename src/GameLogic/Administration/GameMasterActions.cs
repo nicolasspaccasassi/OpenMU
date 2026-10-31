@@ -4,7 +4,9 @@
 
 namespace MUnique.OpenMU.GameLogic.Administration;
 
+using MUnique.OpenMU.DataModel.Configuration;
 using MUnique.OpenMU.GameLogic.Attributes;
+using MUnique.OpenMU.GameLogic.NPC;
 using MUnique.OpenMU.GameLogic.Views.Character;
 using MUnique.OpenMU.GameLogic.Views.Inventory;
 using MUnique.OpenMU.GameLogic.Views.World;
@@ -120,4 +122,61 @@ public static class GameMasterActions
     /// <param name="target">The target coordinate.</param>
     /// <returns>The movement completion.</returns>
     internal static ValueTask MoveAsync(Player player, Point target) => player.MoveAsync(target);
+
+    /// <summary>The highest quantity <see cref="SpawnMonstersAsync"/> accepts in one call.</summary>
+    public const int MaxSpawnQuantity = 50;
+
+    /// <summary>Spawns one or more monsters in an area centered on a map coordinate, independent of any
+    /// live player - shared by the <c>/summon</c> chat command and the admin spawn operation.</summary>
+    /// <param name="gameMap">The live map to spawn on.</param>
+    /// <param name="gameContext">The owning game server's context.</param>
+    /// <param name="monsterDefinition">The monster to spawn.</param>
+    /// <param name="x">The horizontal center of the spawn area.</param>
+    /// <param name="y">The vertical center of the spawn area.</param>
+    /// <param name="quantity">The requested number of monsters, clamped to <see cref="MaxSpawnQuantity"/>.</param>
+    /// <returns>How many actually spawned, and, if that's fewer than requested, why it stopped early.</returns>
+    public static async ValueTask<(int Spawned, string? StoppedReason)> SpawnMonstersAsync(GameMap gameMap, IGameContext gameContext, MonsterDefinition monsterDefinition, byte x, byte y, int quantity)
+    {
+        quantity = Math.Clamp(quantity, 1, MaxSpawnQuantity);
+        var area = new MonsterSpawnArea
+        {
+            GameMap = gameMap.Definition,
+            MonsterDefinition = monsterDefinition,
+            SpawnTrigger = SpawnTrigger.OnceAtEventStart,
+            Quantity = 1,
+            X1 = (byte)Math.Max(x - 3, byte.MinValue),
+            X2 = (byte)Math.Min(x + 3, byte.MaxValue),
+            Y1 = (byte)Math.Max(y - 3, byte.MinValue),
+            Y2 = (byte)Math.Min(y + 3, byte.MaxValue),
+        };
+
+        var spawned = 0;
+        string? stoppedReason = null;
+        for (var i = 0; i < quantity; i++)
+        {
+            INpcIntelligence intelligence = new BasicMonsterIntelligence();
+            var monster = new Monster(area, monsterDefinition, gameMap, gameContext.DropGenerator, intelligence, gameContext.PlugInManager, gameContext.PathFinderPool);
+            intelligence.Npc = monster;
+
+            try
+            {
+                // Monster.Initialize() picks a random walkable point within the area (above) and throws
+                // if none of its (up to 100) attempts land on one - most commonly because the area is a
+                // safezone, where regular monsters can never spawn. Stop immediately instead of retrying
+                // the same failure up to `quantity` times: every other monster would fail identically.
+                monster.Initialize();
+            }
+            catch (InvalidOperationException)
+            {
+                stoppedReason = "No valid spawn point found in the area - it may be entirely a safe zone or blocked terrain.";
+                break;
+            }
+
+            await gameMap.AddAsync(monster).ConfigureAwait(false);
+            monster.OnSpawn();
+            spawned++;
+        }
+
+        return (spawned, spawned == 0 ? stoppedReason : null);
+    }
 }

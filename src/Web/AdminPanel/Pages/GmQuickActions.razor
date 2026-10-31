@@ -1,0 +1,94 @@
+@page "/gm-quick-actions"
+@attribute [Authorize(Policy = AdminPolicies.Operator)]
+
+<PageTitle>Arkanum: GM Quick Actions</PageTitle>
+<Breadcrumb IsFirstFromRoot="true" Caption="GM Quick Actions" />
+
+<h1>GM Quick Actions</h1>
+<p class="text-muted">
+    One-click actions on the live server - no GM character needs to be online. The same calls a
+    standalone companion app or ChatGPT would make, with the same authorization and audit trail.
+</p>
+
+<div class="card mb-4">
+    <div class="card-header">Spawn Monster</div>
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-auto">
+                <label class="form-label">Server</label>
+                <select class="form-select" @bind="this._serverId">
+                    @foreach (var server in this.GameServers)
+                    {
+                        <option value="@server.Id">@server.Id - @server.Description</option>
+                    }
+                </select>
+            </div>
+            <div class="col-auto">
+                <label class="form-label">Map number</label>
+                <input type="number" class="form-control" style="width: 8rem" @bind="this._mapNumber" />
+            </div>
+            <div class="col-auto">
+                <label class="form-label">Monster (number or name)</label>
+                <input type="text" class="form-control" placeholder="e.g. Kundun or 330" @bind="this._monsterIdentifier" />
+            </div>
+            <div class="col-auto">
+                <label class="form-label">X</label>
+                <input type="number" class="form-control" style="width: 6rem" @bind="this._spawnX" />
+            </div>
+            <div class="col-auto">
+                <label class="form-label">Y</label>
+                <input type="number" class="form-control" style="width: 6rem" @bind="this._spawnY" />
+            </div>
+            <div class="col-auto">
+                <label class="form-label">Quantity</label>
+                <input type="number" class="form-control" style="width: 6rem" @bind="this._quantity" min="1" max="50" />
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-primary" disabled="@this._isBusy" @onclick="this.OnSpawnMonsterClickAsync">Spawn</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">Give Item</div>
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-auto">
+                <label class="form-label">Character name</label>
+                <input type="text" class="form-control" @bind="this._itemCharacterName" />
+            </div>
+            <div class="col-auto">
+                <label class="form-label">Group</label>
+                <input type="number" class="form-control" style="width: 6rem" @bind="this._itemGroup" />
+            </div>
+            <div class="col-auto">
+                <label class="form-label">Number</label>
+                <input type="number" class="form-control" style="width: 6rem" @bind="this._itemNumber" />
+            </div>
+            <div class="col-auto">
+                <label class="form-label">Level</label>
+                <input type="number" class="form-control" style="width: 6rem" @bind="this._itemLevel" />
+            </div>
+            <div class="col-auto">
+                <label class="form-label">Option level</label>
+                <input type="number" class="form-control" style="width: 6rem" @bind="this._itemOptionLevel" />
+            </div>
+            <div class="col-auto">
+                <label class="form-label">Excellent options</label>
+                <input type="number" class="form-control" style="width: 6rem" @bind="this._itemExcellentOptions" />
+            </div>
+            <div class="col-auto form-check">
+                <input type="checkbox" class="form-check-input" id="itemSkill" @bind="this._itemSkill" />
+                <label class="form-check-label" for="itemSkill">Skill</label>
+            </div>
+            <div class="col-auto form-check">
+                <input type="checkbox" class="form-check-input" id="itemLuck" @bind="this._itemLuck" />
+                <label class="form-check-label" for="itemLuck">Luck</label>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-primary" disabled="@this._isBusy" @onclick="this.OnGiveItemClickAsync">Give</button>
+            </div>
+        </div>
+    </div>
+</div>

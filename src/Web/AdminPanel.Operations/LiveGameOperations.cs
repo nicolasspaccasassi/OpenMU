@@ -144,6 +144,47 @@ public sealed class LiveGameOperations(IServerProvider servers, IPersistenceCont
         return await AdminChangeExecution.RunAsync(executor, confirmations, actor, AdminRoles.Operator, "events_start", arguments, change, apply, confirmationToken, () => ExecuteLiveAsync(() => server.StartEventAsync(eventType, restart, expected, cancellationToken)), cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>Previews or spawns one or more monsters live on a hosted map, independent of any online character.</summary>
+    /// <param name="serverId">The actual game server identifier.</param>
+    /// <param name="mapNumber">The target map, hosted by the selected server.</param>
+    /// <param name="monsterIdentifier">The monster's configured number, or its exact neutral-language name.</param>
+    /// <param name="x">The horizontal center of the spawn area.</param>
+    /// <param name="y">The vertical center of the spawn area.</param>
+    /// <param name="quantity">The number of monsters to spawn, clamped to a safe maximum.</param>
+    /// <param name="apply">Whether to apply an approved preview.</param>
+    /// <param name="confirmationToken">The caller-bound, single-use preview token.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The preview or applied result.</returns>
+    [AdminOperation(AdminRole.Operator, ReadOnly = false)]
+    public async ValueTask<JsonObject> SpawnMonsterAsync(int serverId, ushort mapNumber, string monsterIdentifier, byte x, byte y, int quantity, bool apply, string? confirmationToken, CancellationToken cancellationToken)
+    {
+        var actor = await AdminChangeExecution.RequireAsync(executor, settings, AdminRoles.Operator, cancellationToken).ConfigureAwait(false);
+        var configuration = await configurations.GetOwnerAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+        var map = configuration.Maps.SingleOrDefault(m => m.Number == mapNumber);
+        if (map is null)
+        {
+            throw new ArgumentException("Unknown map. Use servers_overview to find a hosted map's number.", nameof(mapNumber));
+        }
+
+        var monsterExists = short.TryParse(monsterIdentifier, out var number)
+            ? configuration.Monsters.Any(m => m.Number == number)
+            : configuration.Monsters.Any(m => m.Designation.ValueInNeutralLanguageAsSpan.Equals(monsterIdentifier, StringComparison.OrdinalIgnoreCase));
+        if (!monsterExists)
+        {
+            throw new ArgumentException("Unknown monster. Use its configured number or its exact neutral-language name.", nameof(monsterIdentifier));
+        }
+
+        quantity = Math.Clamp(quantity, 1, GameMasterActions.MaxSpawnQuantity);
+        var server = (IGameServerAdministration)this.ResolveServer(serverId);
+        var arguments = new { serverId, mapNumber, monsterIdentifier, x, y, quantity };
+        var change = new JsonObject
+        {
+            ["before"] = JsonSerializer.SerializeToNode(new { serverId, mapNumber }),
+            ["after"] = JsonSerializer.SerializeToNode(arguments),
+        };
+        return await AdminChangeExecution.RunAsync(executor, confirmations, actor, AdminRoles.Operator, "monsters_spawn", arguments, change, apply, confirmationToken, () => ExecuteLiveAsync(() => server.SpawnMonsterAsync(mapNumber, monsterIdentifier, x, y, quantity, cancellationToken)), cancellationToken).ConfigureAwait(false);
+    }
+
     private static async ValueTask ExecuteLiveAsync(Func<ValueTask<GameServerAdminResult>> action)
     {
         GameServerAdminResult result;
