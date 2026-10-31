@@ -43,6 +43,11 @@ services:
       # Optional base32 TOTP secret, if the bootstrap user should require a second factor.
       OPENMU_ADMIN_TOTP_SECRET: ${OPENMU_ADMIN_TOTP_SECRET:-}
       # website authenticates itself at the public API under /api.
+      # Opt-in MCP endpoint (/mcp), off by default. Access still needs an API key created in the
+      # panel's "API Keys" page, and (over plain HTTP, as here) the request must either come from
+      # loopback or arrive via a reverse proxy this host trusts for forwarded headers (nginx, see
+      # the UseForwardedHeaders call in Program.cs) - e.g. behind a TLS-terminating tunnel.
+      OPENMU_MCP_ENABLED: "true"
     volumes:
       - adminpanel-keys:/app/data-protection-keys
     working_dir: /app/

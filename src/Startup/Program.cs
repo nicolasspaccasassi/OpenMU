@@ -491,7 +491,7 @@ internal sealed class Program : IDisposable
             // means "trust any proxy" to this middleware - an address allowlist would just churn
             // on Docker's dynamic container IPs for no real security gain, since nginx is already
             // the only thing this container's admin port is reachable from.
-            forwardedHeaderOptions.KnownNetworks.Clear();
+            forwardedHeaderOptions.KnownIPNetworks.Clear();
             forwardedHeaderOptions.KnownProxies.Clear();
             host.UseForwardedHeaders(forwardedHeaderOptions);
 
